@@ -1,4 +1,4 @@
-import { GITHUB_TOKEN, GITHUB_REPOSITORIES } from '$env/static/private';
+import { GITHUB_TOKEN, GITHUB_REPOSITORIES, GITHUB_OWN_USERNAME } from '$env/static/private';
 import { json } from '@sveltejs/kit';
 
 export interface GithubComment {
@@ -10,10 +10,12 @@ export interface GithubComment {
     html_url: string;
     issue_url: string;
     issue_number: number;
+    own_comment: boolean;
 }
 
 export interface GithubUser {
     login: string;
+    avatar_url: string;
 }
 
 export async function GET(event) {
@@ -46,6 +48,7 @@ export async function GET(event) {
             ...comment,
             body: truncate(comment.body),
             repo,
+            own_comment: comment.user.login === GITHUB_OWN_USERNAME,
             issue_number: parseInt(comment.issue_url.split('/').pop() || '0', 10),
         })));
     }

@@ -6,21 +6,54 @@
         padding: 0;
         margin: 1em 0;
     }
-    li {
-        border: 1px solid #388bfd66;
+    .comment-container {
+        border: 1px solid #3d444d;
         border-radius: 4px;
         margin-bottom: 1em;
+        background-color: #24001d;
     }
-    li:hover {
-        background-color: #388bfd1a;
+    .comment-container.comment-own {
+        border: 1px solid #388bfd66;
+        border-radius: 4px;
+        background-color: transparent;
+    }
+    .comment-container:hover {
         border-color: #1f6feb;
         box-shadow: 0 0 0 1px #4493f8;
+    }
+    .comment-header {
+        padding: 0.25em 0.5em;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #3d444d;
+        font-size: 0.8em;
+    }
+    .comment-own .comment-header {
+        border-bottom: 1px solid #388bfd66;
+    }
+    .comment-avatar {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        margin-right: 0.5em;
+    }
+    .comment-timestamp {
+        margin-left: auto;
+    }
+    .comment-header-username {
+        font-weight: bold;
     }
     .comment {
         padding: 0.8em;
     }
     .comment-footer {
+        display: flex;
         font-size: 0.8em;
+        background-color: #37002c;
+        padding: 0.5em;
+        border-top: 1px solid #3d444d;
+    }
+    .comment-own .comment-footer {
         background-color: #388bfd1a;
         padding: 0.5em;
         border-top: 1px solid #388bfd66;
@@ -99,9 +132,6 @@
         }
     });
 
-
-
-
 </script>
 
 <!-- Show loading indicator while loading comments -->
@@ -113,16 +143,25 @@
 {#if comments !== undefined}
 <ul>
     {#each comments as comment (comment.id)}
-        <li>
+        <li class="comment-container {comment.own_comment ? 'comment-own' : ''}">
             <a href={comment.html_url} target="_blank" rel="noopener" class="comment-link">
+                <div class="comment-header">
+                    <img class="comment-avatar" src={comment.user.avatar_url} alt="avatar" />
+                    <div class="comment-header-username">
+                        {comment.user.login}
+                    </div>
+                    <div class="comment-timestamp">
+                        {new Date(comment.created_at).toLocaleTimeString('en-GB', { timeZoneName: 'short' })}
+                    </div>
+                </div>
                 <div class="markdown-body comment">
                     {@html comment.body ? marked(comment.body) : ''}
                 </div>
                 <div class="comment-footer">
-                    {new Date(comment.created_at).toLocaleTimeString('en-GB', { timeZoneName: 'short' })}
-                    by <b>{comment.user.login}</b>
-                    on issue <span class="issue-link">#{comment.issue_number}</span>
-                    repo {comment.repo.split('/').shift()}/<b>{comment.repo.split('/').pop()}</b>
+                    <div class="comment-issue-details">
+                        <span class="issue-link">#{comment.issue_number}</span>
+                        repo {comment.repo.split('/').shift()}/<b>{comment.repo.split('/').pop()}</b>
+                    </div>
                 </div>
             </a>
         </li>
