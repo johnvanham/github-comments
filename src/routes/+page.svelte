@@ -87,7 +87,21 @@
 
     onMount(async () => {
         comments = await fetch('/comments').then(res => res.json());
+
+        // Auto refresh comments every 5 minutes
+        setInterval(() => {
+            refreshComments();
+        }, 300000);
+
+        async function refreshComments() {
+            comments = await fetch('/comments').then(res => res.json());
+            console.log('Refreshed comments');
+        }
     });
+
+
+
+
 </script>
 
 <!-- Show loading indicator while loading comments -->
