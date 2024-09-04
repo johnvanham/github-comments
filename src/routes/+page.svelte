@@ -151,7 +151,8 @@
                         {comment.user.login}
                     </div>
                     <div class="comment-timestamp">
-                        {new Date(comment.created_at).toLocaleTimeString('en-GB', { timeZoneName: 'short' })}
+                        <b>{new Date(comment.created_at).toLocaleTimeString('en-GB', { timeZoneName: 'short' })}</b>
+                        ({new Date(comment.created_at).toLocaleTimeString('en-GB', { timeZone: 'Asia/Kolkata' })} IST)
                     </div>
                 </div>
                 <div class="markdown-body comment">
