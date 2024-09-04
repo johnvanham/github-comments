@@ -45,7 +45,7 @@
                 <div class="comment-footer">
                     {new Date(comment.created_at).toLocaleTimeString()}
                     by <b>{comment.user.login}</b>
-                    on issue <a href={comment.html_url}>#{comment.issue_number}</a>
+                    on issue <a target="_blank" href={comment.html_url}>#{comment.issue_number}</a>
                     repo {comment.repo}
                 </div>
             </li>
