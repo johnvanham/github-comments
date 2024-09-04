@@ -15,7 +15,7 @@ This will currently only grab 100 comments from each repo. So if there are more 
 
 ## Developing
 
-Once conled, install dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Once cloned, install dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
 ```bash
 npm run dev
