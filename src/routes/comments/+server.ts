@@ -66,6 +66,6 @@ export async function GET(event) {
 
 // Truncate a string to only include first paragraph
 function truncate(str: string) {
-    const paragraphs = str.split('\n\n');
-    return paragraphs.length > 1 ? paragraphs[0] : str;
+    const paragraphs = str.split('\n');
+    return paragraphs.length > 1 ? paragraphs[0] + '<br>...' : str;
 }
