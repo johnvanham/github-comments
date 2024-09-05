@@ -57,7 +57,7 @@ export async function GET(event) {
     comments.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
     // Remove any comments not from today
-    comments = comments.filter(comment => new Date(comment.created_at).getDate() === new Date().getDate());
+    comments = comments.filter(comment => comment.created_at.substring(0, 10) === new Date().toISOString().substring(0, 10));
 
     // Return the comments
     return json(comments);
