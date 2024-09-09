@@ -24,6 +24,8 @@ export async function GET(event) {
         throw new Error('No GITHUB_TOKEN defined');
     }
 
+    const date = event.url.searchParams.get('date');
+
     const headers = {
         'Authorization': `token ${GITHUB_TOKEN}`
     };
@@ -57,7 +59,11 @@ export async function GET(event) {
     comments.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
     // Remove any comments not from today
-    comments = comments.filter(comment => comment.created_at.substring(0, 10) === new Date().toISOString().substring(0, 10));
+    if(date) {
+        comments = comments.filter(comment => comment.created_at.substring(0, 10) === date);
+    } else {
+        comments = comments.filter(comment => comment.created_at.substring(0, 10) === new Date().toISOString().substring(0, 10));
+    }
 
     // Return the comments
     return json(comments);

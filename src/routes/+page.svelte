@@ -1,138 +1,47 @@
-<h1>Github Comments for {new Date().toLocaleDateString()}</h1>
-
-<style>
-    ul {
-        list-style-type: none;
-        padding: 0;
-        margin: 1em 0;
-    }
-    .comment-container {
-        border: 1px solid #3d444d;
-        border-radius: 4px;
-        margin-bottom: 1em;
-        background-color: #24001d;
-    }
-    .comment-container.comment-own {
-        border: 1px solid #388bfd66;
-        border-radius: 4px;
-        background-color: transparent;
-    }
-    .comment-container:hover {
-        border-color: #1f6feb;
-        box-shadow: 0 0 0 1px #4493f8;
-    }
-    .comment-header {
-        padding: 0.25em 0.5em;
-        display: flex;
-        align-items: center;
-        border-bottom: 1px solid #3d444d;
-        font-size: 0.8em;
-    }
-    .comment-own .comment-header {
-        border-bottom: 1px solid #388bfd66;
-    }
-    .comment-avatar {
-        width: 16px;
-        height: 16px;
-        border-radius: 50%;
-        margin-right: 0.5em;
-    }
-    .comment-timestamp {
-        margin-left: auto;
-    }
-    .comment-header-username {
-        font-weight: bold;
-    }
-    .comment {
-        padding: 0.8em;
-    }
-    .comment-footer {
-        display: flex;
-        font-size: 0.8em;
-        background-color: #37002c;
-        padding: 0.5em;
-        border-top: 1px solid #3d444d;
-    }
-    .comment-own .comment-footer {
-        background-color: #388bfd1a;
-        padding: 0.5em;
-        border-top: 1px solid #388bfd66;
-    }
-    .comment-link {
-        text-decoration: none;
-        color: inherit;
-        font-weight: inherit;
-    }
-    .issue-link {
-        color: #388bfd;
-    }
-    .loading-indicator {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100px;
-        width: 100%;
-    }
-    .lds-ring {
-        display: inline-block;
-        position: relative;
-        width: 40px;
-        height: 40px;
-    }
-    .lds-ring div {
-        box-sizing: border-box;
-        display: block;
-        position: absolute;
-        width: 32px;
-        height: 32px;
-        margin: 4%;
-        border: 4px solid #a3a3a3;
-        border-radius: 50%;
-        animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-        border-color: #a3a3a3 transparent transparent transparent;
-    }
-    .lds-ring div:nth-child(1) {
-        animation-delay: -0.45s;
-    }
-    .lds-ring div:nth-child(2) {
-        animation-delay: -0.3s;
-    }
-    .lds-ring div:nth-child(3) {
-        animation-delay: -0.15s;
-    }
-    @keyframes lds-ring {
-        0% {
-            transform: rotate(0deg);
-        }
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-</style>
-
 <script lang="ts">
 
+    import './style.css';
     import { onMount } from 'svelte';
     import { marked } from 'marked';
     import type { GithubComment } from './comments/+server';
+    import { DateInput } from 'date-picker-svelte';
 
-    let comments: Array<GithubComment>;
+    let comments: Array<GithubComment>|undefined;
+    let dateInput: Date = new Date();
+    let date = dateInput.toISOString().substring(0, 10);
 
     onMount(async () => {
-        comments = await fetch('/comments').then(res => res.json());
+
+        comments = await fetch('/comments?date=' + date).then(res => res.json());
 
         // Auto refresh comments every 5 minutes
         setInterval(() => {
-            refreshComments();
+            refresh();
         }, 300000);
 
-        async function refreshComments() {
-            comments = await fetch('/comments').then(res => res.json());
-            console.log('Refreshed comments');
+        async function refresh() {
+            refreshComments();
         }
     });
 
+    async function refreshComments() {
+        comments = undefined;
+        date = dateInput.toISOString().substring(0, 10);
+        comments = await fetch('/comments?date=' + date).then(res => res.json());
+        console.log('Refreshed comments');
+    }
+
 </script>
+
+<!-- Header -->
+<div class="header">
+    <h1>Github Comments Feed</h1>
+
+    <!-- Date input -->
+    <div class="date-input">
+        <DateInput bind:value={dateInput} on:select={refreshComments} format="dd/MM/yyyy" />
+    </div>
+</div>
 
 <!-- Show loading indicator while loading comments -->
 <div class="loading-indicator" style="display: {comments === undefined ? 'flex' : 'none'}">
