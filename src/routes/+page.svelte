@@ -16,12 +16,9 @@
 
         // Auto refresh comments every 5 minutes
         setInterval(() => {
-            refresh();
+            refreshComments();
         }, 300000);
 
-        async function refresh() {
-            refreshComments();
-        }
     });
 
     async function refreshComments() {
