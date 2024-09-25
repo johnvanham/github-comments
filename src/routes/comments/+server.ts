@@ -48,7 +48,7 @@ export async function GET(event) {
         // Add the comments to the list
         comments = comments.concat(data.map(comment => ({
             ...comment,
-            body: truncate(comment.body),
+            body: truncate(comment.body, 3),
             repo,
             own_comment: comment.user.login === GITHUB_OWN_USERNAME,
             issue_number: parseInt(comment.issue_url.split('/').pop() || '0', 10),
@@ -71,7 +71,7 @@ export async function GET(event) {
 }
 
 // Truncate a string to only include first paragraph
-function truncate(str: string) {
+function truncate(str: string, paras: number) {
     const paragraphs = str.split('\n');
-    return paragraphs.length > 1 ? paragraphs[0] + '<br>...' : str;
+    return paragraphs.length > paras ? paragraphs.slice(0, paras).join('<br>') + '<span class="more">...</span>' : str;
 }

@@ -58,6 +58,7 @@ ul {
 }
 .comment {
     padding: 0.8em;
+    position: relative;
 }
 .comment-footer {
     display: flex;
@@ -75,6 +76,16 @@ ul {
     text-decoration: none !important;
     color: inherit;
     font-weight: inherit;
+}
+.more {
+    /* Pill style */
+    background-color: #00183a;
+    color: rgb(192, 192, 192);
+    padding: 0.1em 1em;
+    border-radius: 40%;
+    position: absolute;
+    right: 1em;
+    bottom: 0.5em;
 }
 .issue-link {
     color: #388bfd;
