@@ -45,11 +45,16 @@ export async function GET(event) {
         const res = await fetch(issuesUrl, { headers });
         const data = await res.json() as GithubComment[];
 
+        // Check if data.map is a function
+        if(typeof data.map !== 'function') {
+            continue;
+        }
+
         // Add the comments to the list
         comments = comments.concat(data.map(comment => ({
             ...comment,
             body: truncate(comment.body, 3),
-            repo,
+            repo: repo.replace('GhostLtd/', ''),
             own_comment: comment.user.login === GITHUB_OWN_USERNAME,
             issue_number: parseInt(comment.issue_url.split('/').pop() || '0', 10),
         })));

@@ -77,12 +77,14 @@ ul {
     color: inherit;
     font-weight: inherit;
 }
-.more {
+.more, .pill {
     /* Pill style */
     background-color: #00183a;
     color: rgb(192, 192, 192);
     padding: 0.1em 1em;
-    border-radius: 40%;
+    border-radius: 8px;
+}
+.more {
     position: absolute;
     right: 1em;
     bottom: 0.5em;
@@ -131,4 +133,24 @@ ul {
     100% {
         transform: rotate(360deg);
     }
+}
+.unique-issues-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1em 0;
+    flex-wrap: wrap;
+}
+.unique-issues-container .pill {
+    padding: 0.3em 0.5em;
+    margin: 0.5em;
+}
+.unique-issues-container a {
+    color: #65a2f3;
+    font-weight: normal;
+}
+.unique-issues-container a:hover {
+    background-color: #006eff;
+    color: #fff;
+    text-decoration: none;
 }
