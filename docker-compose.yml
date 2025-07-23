@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  github-comments:
+    build: .
+    ports:
+      - '7585:7585'
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - PORT=7585
+      - HOST=0.0.0.0
+    restart: unless-stopped
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '10m'
+        max-file: '3'
+    healthcheck:
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:7585/']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

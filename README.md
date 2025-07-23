@@ -1,6 +1,6 @@
 # Github Comments Today
 
-Simple [SvelteKit](https://github.com/sveltejs/kit) app to display a summary of the current day's comments added to issues for one or more repositories in chronological order with comments truncated.  
+Simple [SvelteKit](https://github.com/sveltejs/kit) app to display a summary of the current day's comments added to issues for one or more repositories in chronological order with comments truncated.
 
 ## Config
 
