@@ -14,7 +14,7 @@
 	let comments: Array<GithubComment> | undefined;
 	let uniqueIssues: Array<IssuePill> | undefined;
 	let dateInput: Date = new Date();
-	let date = dateInput.toISOString().substring(0, 10);
+	let date: string;
 
 	onMount(async () => {
 		// Get the comments
@@ -28,7 +28,9 @@
 
 	async function loadCommentsData() {
 		comments = undefined;
-		date = dateInput.toISOString().substring(0, 10);
+		// Create a new date at midnight local time to ensure consistent date string
+		const localDate = new Date(dateInput.getFullYear(), dateInput.getMonth(), dateInput.getDate());
+		date = localDate.toISOString().substring(0, 10);
 		comments = await fetch('/comments?date=' + date).then((res) => res.json());
 
 		// Get unique issue number with issue url from the list of comments
