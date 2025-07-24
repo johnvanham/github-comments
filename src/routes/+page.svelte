@@ -28,9 +28,11 @@
 
 	async function loadCommentsData() {
 		comments = undefined;
-		// Create a new date at midnight local time to ensure consistent date string
-		const localDate = new Date(dateInput.getFullYear(), dateInput.getMonth(), dateInput.getDate());
-		date = localDate.toISOString().substring(0, 10);
+		// Format date as YYYY-MM-DD without timezone conversion
+		const year = dateInput.getFullYear();
+		const month = String(dateInput.getMonth() + 1).padStart(2, '0');
+		const day = String(dateInput.getDate()).padStart(2, '0');
+		date = `${year}-${month}-${day}`;
 		comments = await fetch('/comments?date=' + date).then((res) => res.json());
 
 		// Get unique issue number with issue url from the list of comments
