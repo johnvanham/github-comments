@@ -1,6 +1,6 @@
 import { env } from '$env/dynamic/private';
 import { json } from '@sveltejs/kit';
-
+import type { RequestEvent } from '@sveltejs/kit';
 export interface GithubComment {
 	id: number;
 	body: string;
@@ -18,7 +18,7 @@ export interface GithubUser {
 	avatar_url: string;
 }
 
-export async function GET(event) {
+export async function GET(event: RequestEvent) {
 	const startTime = Date.now();
 	const date = event.url.searchParams.get('date');
 	const clientIP = event.getClientAddress();
@@ -94,7 +94,7 @@ export async function GET(event) {
 			const processedComments = data.map((comment) => ({
 				...comment,
 				body: truncate(comment.body, 3),
-				repo: repo.replace('GhostLtd/', ''),
+				repo: env.GITHUB_ORG_NAME ? repo.replace(env.GITHUB_ORG_NAME+'/', '') : repo,
 				own_comment: comment.user.login === env.GITHUB_OWN_USERNAME,
 				issue_number: parseInt(comment.issue_url.split('/').pop() || '0', 10)
 			}));
