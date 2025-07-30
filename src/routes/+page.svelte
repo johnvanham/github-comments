@@ -103,7 +103,7 @@
 						</div>
 						<div class="comment-footer">
 							<div class="comment-issue-details">
-								<span class="issue-link">#{item.issue_number}</span> <b>{item.repo}</b>
+								<span class="issue-link">#{item.issue_number}</span> <span class="repo-name">{item.repo}</span>
 							</div>
 						</div>
 					</a>
@@ -136,7 +136,10 @@
 						{/if}
 						<div class="event-footer">
 							<div class="event-issue-details">
-								<span class="issue-link">#{item.issue_number}</span> <b>{item.repo}</b>
+								<span class="issue-link">#{item.issue_number}</span> <span class="repo-name">{item.repo}</span>
+								{#if item.issue_title}
+									<span class="issue-title-footer"> - <b>{item.issue_title}</b></span>
+								{/if}
 							</div>
 							<div class="event-badge-container">
 								{#if item.event === 'opened'}

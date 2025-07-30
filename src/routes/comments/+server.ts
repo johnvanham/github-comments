@@ -17,6 +17,7 @@ export interface GithubFeedItem {
 
 	// For events
 	event?: 'opened' | 'closed' | 'reopened';
+	issue_title?: string;
 }
 
 export interface GithubComment {
@@ -43,6 +44,7 @@ export interface GithubEvent {
 			html_url: string;
 			url: string;
 			body: string;
+			title: string;
 		};
 	};
 }
@@ -251,6 +253,7 @@ async function fetchEventsForRepo(
 				issue_number: event.payload.issue.number,
 				own_comment: event.actor.login === env.GITHUB_OWN_USERNAME,
 				event: event.payload.action as 'opened' | 'closed' | 'reopened',
+				issue_title: event.payload.issue.title,
 				body: event.payload.action === 'opened' ? truncate(event.payload.issue.body || '', 3) : undefined
 			}));
 

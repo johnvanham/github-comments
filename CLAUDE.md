@@ -39,11 +39,20 @@ The application requires a `.env` file in the root directory with:
 - `npm run lint` - Check code formatting and linting
 - `npm run format` - Auto-format code with Prettier
 
-### Docker
+### Docker/Podman
 
-- `docker build -t github-comments:latest .` - Build Docker image
-- `docker-compose up` - Run with docker-compose (requires .env file)
-- `docker run -p 7585:7585 -e GITHUB_TOKEN=... -e GITHUB_REPOSITORIES=... -e GITHUB_OWN_USERNAME=... github-comments:latest` - Run container directly
+- `podman build -t github-comments:latest .` - Build container image (or `docker build`)
+- `podman-compose up` - Run with podman-compose (requires .env file)
+- `podman run -p 7585:7585 -e GITHUB_TOKEN=... -e GITHUB_REPOSITORIES=... -e GITHUB_OWN_USERNAME=... github-comments:latest` - Run container directly
+
+#### Multi-platform builds for releases:
+- `podman build --platform linux/amd64,linux/arm64 -t ghcr.io/johnvanham/github-comments:VERSION -t ghcr.io/johnvanham/github-comments:latest .` - Build multi-platform image
+- `podman push ghcr.io/johnvanham/github-comments:VERSION && podman push ghcr.io/johnvanham/github-comments:latest` - Push to GitHub Container Registry
+
+#### Architecture-specific builds (for Raspberry Pi compatibility):
+- `podman build --platform linux/arm64 -t ghcr.io/johnvanham/github-comments:VERSION-arm64 .` - Build ARM64 image for Raspberry Pi 4
+- `podman push ghcr.io/johnvanham/github-comments:VERSION-arm64` - Push ARM64 image
+- **Note:** Use the `-arm64` tagged image on Raspberry Pi 4 to avoid "exec format error"
 
 ## Architecture
 
